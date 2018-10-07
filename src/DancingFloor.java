@@ -3,7 +3,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 class DancingFloor {
-    private final int SPACE = 6;
+    private final int SPACE = 10;
     private Lock lock = new ReentrantLock();
     private Condition[] listenToDj = new Condition[SPACE];
     private Condition freeSpace;

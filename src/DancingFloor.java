@@ -36,19 +36,22 @@ class DancingFloor {
         int entryNr = -1;
         lock.lock();
         try {
-            while (!seatAvailable() || vipInClub) {
-                freeSpace.await();
-            }
             if (Thread.currentThread().getName().contains("Vip"))
             {
-                while(inside>SPACE/2)
+                while(inside>SPACE/2 && !seatAvailable())
                 {
                     vipInClub =true;
                     freeSpace.await();
                 }
             }
+            if(Thread.currentThread().getName().contains("Normal")) {
+                while (!seatAvailable() || vipInClub) {
+                    freeSpace.await();
+                }
+            }
             assert inside < SPACE;
             inside++;
+            peopleInside();
             entryNr = getAvailableSeat();
 
         } catch (InterruptedException ex) {
@@ -69,9 +72,14 @@ class DancingFloor {
             {
                 vipInClub=false;
             }
+            peopleInside();
             freeSpace.signal();
         } finally {
             lock.unlock();
         }
+    }
+    private void peopleInside()
+    {
+        System.out.println("Currently there are "+inside+" people inside.");
     }
 }

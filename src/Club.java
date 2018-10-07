@@ -2,8 +2,8 @@ public class Club {
     private final int normalCustomersTotal = 15;
     private final int vipTotal=5;
     public static void main(String[] args) {
-        Club world = new Club();
-        world.startup();
+        Club club = new Club();
+        club.startup();
     }
     public void startup() {
         NormalCustomer[] normalCustomers = new NormalCustomer[normalCustomersTotal];

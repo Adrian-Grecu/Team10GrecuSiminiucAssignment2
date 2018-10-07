@@ -1,5 +1,6 @@
 public class Vip extends Thread implements Customer {
     private final DancingFloor dancingFloor;
+    private boolean isListening=false;
 
     public Vip(DancingFloor dancingFloor,String name) {
         super(name);
@@ -9,7 +10,8 @@ public class Vip extends Thread implements Customer {
     @Override
     public void listen() {
         try {
-            Thread.sleep(4000);
+            isListening=true;
+            Thread.sleep(6000);
             System.out.println(getName() + " is listening");
         } catch (Exception e) {
         }
@@ -18,9 +20,19 @@ public class Vip extends Thread implements Customer {
     @Override
     public void await() {
          try {
-            Thread.sleep(4000);
+             isListening=false;
+            Thread.sleep(6000);
             System.out.println(getName() + " is waiting");
         } catch (Exception e) {
+        }
+    }
+    public void run() {
+        while (true) {
+            int seatNumber = dancingFloor.enter();
+            listen();
+            dancingFloor.leave(seatNumber);
+            System.out.println(Thread.currentThread().getName()+" left");
+            await();
         }
     }
 }

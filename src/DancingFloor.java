@@ -3,12 +3,14 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 class DancingFloor {
-    private final int SPACE = 20;
+    private final int SPACE = 6;
     private Lock lock = new ReentrantLock();
     private Condition[] listenToDj = new Condition[SPACE];
     private Condition freeSpace;
     private boolean[] isSpace = new boolean[SPACE];
     private int inside = 0;
+    private boolean vipInClub =false;
+
 
     public DancingFloor() {
         for (int i = 0; i < SPACE; i++) {
@@ -17,7 +19,7 @@ class DancingFloor {
         }
         freeSpace = lock.newCondition();
     }
-    public boolean seatAvailable() {
+    private boolean seatAvailable() {
         return inside < SPACE - 1;
     }
     private int getAvailableSeat() {
@@ -30,16 +32,25 @@ class DancingFloor {
         assert false : "We should not reach this piece of code";
         return -1;
     }
-    public int enter() {
+    int enter() {
         int entryNr = -1;
         lock.lock();
         try {
-            while (!seatAvailable()) {
+            while (!seatAvailable() || vipInClub) {
                 freeSpace.await();
+            }
+            if (Thread.currentThread().getName().contains("Vip"))
+            {
+                while(inside>SPACE/2)
+                {
+                    vipInClub =true;
+                    freeSpace.await();
+                }
             }
             assert inside < SPACE;
             inside++;
             entryNr = getAvailableSeat();
+
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         } finally {
@@ -47,12 +58,17 @@ class DancingFloor {
         }
         return entryNr;
     }
-    public void leave(int seatNr) {
+    void leave(int seatNr) {
         lock.lock();
         try {
             assert inside >= 0 : "We cannot get less the zero customers in the club";
+
             isSpace[seatNr] = true;
             inside--;
+            if (Thread.currentThread().getName().contains("Vip"))
+            {
+                vipInClub=false;
+            }
             freeSpace.signal();
         } finally {
             lock.unlock();

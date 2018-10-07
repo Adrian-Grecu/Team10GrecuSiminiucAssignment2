@@ -1,6 +1,6 @@
 public class Club {
-    private final int normalCustomersTotal = 70;
-    private final int vipTotal=30;
+    private final int normalCustomersTotal = 7;
+    private final int vipTotal=3;
     public static void main(String[] args) {
         Club world = new Club();
         world.startup();

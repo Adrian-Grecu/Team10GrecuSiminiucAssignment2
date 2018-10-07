@@ -8,7 +8,7 @@ public class NormalCustomer extends Thread implements Customer {
     @Override
     public void listen() {
         try {
-            Thread.sleep(4000);
+            Thread.sleep(6000);
             System.out.println(getName() + " is listening");
         } catch (Exception e) {
         }
@@ -16,7 +16,7 @@ public class NormalCustomer extends Thread implements Customer {
     @Override
     public void await() {
         try {
-            Thread.sleep(4000);
+            Thread.sleep(6000);
             System.out.println(getName() + " is waiting");
         } catch (Exception e) {
         }
@@ -27,6 +27,7 @@ public class NormalCustomer extends Thread implements Customer {
             int seatNumber = dancingFloor.enter();
             listen();
             dancingFloor.leave(seatNumber);
+            System.out.println(Thread.currentThread().getName()+" left");
             await();
         }
     }

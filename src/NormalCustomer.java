@@ -1,4 +1,4 @@
-public class NormalCustomer extends Thread implements Customer {
+public class NormalCustomer extends Thread implements ICustomer {
     private final DancingFloor dancingFloor;
 
     public NormalCustomer(DancingFloor dancingFloor, String name) {

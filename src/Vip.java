@@ -1,4 +1,4 @@
-public class Vip extends Thread implements Customer {
+public class Vip extends Thread implements ICustomer {
     private final DancingFloor dancingFloor;
     private boolean isListening=false;
 

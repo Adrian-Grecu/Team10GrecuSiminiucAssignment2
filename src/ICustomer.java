@@ -1,4 +1,4 @@
-public interface Customer {
+public interface ICustomer {
     void listen();
     void await();
 }
